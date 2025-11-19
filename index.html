@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Proposal</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffe6e6, #ffb3ba, #ffcccc);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            position: relative;
+        }
+        .question {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #d63384;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .yes-btn {
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+        }
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .no-btn {
+            background: linear-gradient(45deg, #a8a8a8, #6c757d);
+            color: white;
+        }
+        .no-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .no-btn.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            animation: moveAway 2s infinite;
+        }
+        @keyframes moveAway {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(100px); }
+            100% { transform: translateX(0); }
+        }
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .heart {
+            position: absolute;
+            color: #ff6b9d;
+            font-size: 2em;
+            animation: float 3s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        .celebration {
+            display: none;
+            font-size: 2em;
+            color: #d63384;
+        }
+        .closing {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #6c757d;
+        }
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="container">
+        <div id="content">
+            <div class="question" id="question">Sanu… will you be mine?</div>
+            <div class="buttons">
+                <button class="yes-btn" id="yesBtn">YES ❤️</button>
+                <button class="no-btn" id="noBtn">NO ❌</button>
+            </div>
+        </div>
+        <div class="celebration" id="celebration">
+            <div>You said yes… and now my world feels complete.</div>
+            <div class="closing">Thank you, Sanu.</div>
+        </div>
+    </div>
+    <audio id="music" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" preload="auto"></audio> <!-- Placeholder for soft music; replace with actual URL -->
+
+    <script>
+        const questionEl = document.getElementById('question');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const content = document.getElementById('content');
+        const celebration = document.getElementById('celebration');
+        const hearts = document.getElementById('hearts');
+        const music = document.getElementById('music');
+
+        let noCount = 0;
+        const messages = [
+            "Sanu… will you be mine?",
+            "At least give me a chance…",
+            "Are you sure about that?",
+            "Just think again… some feelings deserve a yes.",
+            "You’re making this hard for me… don’t break my heart.",
+            "Come on… say yes. I promise I’ll make you smile.",
+            "One last time… choose with your heart.",
+            "Looks like destiny wants you to say yes."
+        ];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            hearts.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        yesBtn.addEventListener('click', () => {
+            content.style.display = 'none';
+            celebration.style.display = 'block';
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+            music.play();
+        });
+
+        noBtn.addEventListener('click', () => {
+            noCount++;
+            if (noCount < messages.length - 1) {
+                questionEl.textContent = messages[noCount];
+            } else {
+                questionEl.textContent = messages[messages.length - 1];
+                noBtn.classList.add('disabled');
+            }
+        });
+    </script>
+</body>
+</html>
